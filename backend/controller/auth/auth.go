@@ -71,7 +71,7 @@ func Login(c *gin.Context) {
 	err := bcrypt.CompareHashAndPassword([]byte(userExist.Password), []byte(json.Password))
 	if err == nil {
 		key = []byte(os.Getenv("SECRET_KEY"))
-		token := jwt.NewWithClaims(jwt.SigningMethodES256, jwt.MapClaims{
+		token := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
 			"userID": userExist.ID,
 			"exp":    time.Now().Add(time.Minute * 1).Unix(),
 		})
