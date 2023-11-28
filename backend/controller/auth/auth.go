@@ -64,9 +64,10 @@ func Login(c *gin.Context) {
 	var userExist orm.User
 	orm.Db.Where("username = ?", json.Username).First(&userExist)
 	if userExist.ID == 0 {
-		c.JSON(http.StatusOK, gin.H{"status": "ERROR", "message": "User already exists"})
+		c.JSON(http.StatusOK, gin.H{"status": "ERROR", "message": "User does not exists"})
 		return
 	}
+
 	err := bcrypt.CompareHashAndPassword([]byte(userExist.Password), []byte(json.Password))
 	if err == nil {
 		key = []byte(os.Getenv("SECRET_KEY"))
