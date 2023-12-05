@@ -42,11 +42,11 @@ func CreateProduct(c *gin.Context) {
 		Username:    username,
 	}
 
-	if result := orm.Db.Create(&product); result.Error != nil {
+	result := orm.Db.Create(&product)
+	if result.Error != nil {
 		c.JSON(http.StatusOK, gin.H{"status": "ERROR", "message": result.Error.Error()})
 		return
 	}
-
 	c.JSON(http.StatusOK, gin.H{"status": "OK", "message": "Product created successfully", "products": product})
 }
 
@@ -85,7 +85,6 @@ func DeleteProductsByID(c *gin.Context) {
 		c.JSON(http.StatusNotFound, gin.H{"error": "Product not found"})
 		return
 	}
-
 	// orm.Db.Where("user_id = ? AND id = ?", userId, productId).Delete(&products)
 	orm.Db.Where("user_id = ? AND id = ?", userId, productId).Unscoped().Delete(&products)
 	c.JSON(http.StatusOK, gin.H{"status": "OK", "message": "Product deleted successfully", "products": products})
