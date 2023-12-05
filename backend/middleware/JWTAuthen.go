@@ -14,6 +14,9 @@ func JWTAuthen() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		secret := []byte(os.Getenv("SECRET_KEY"))
 		header := c.Request.Header.Get("Authorization")
+		// if header == "" {
+		// 	c.Set("isPublic", true)
+		// }
 		tokenString := strings.Replace(header, "Bearer ", "", 1)
 		token, err := jwt.Parse(tokenString, func(token *jwt.Token) (interface{}, error) {
 			if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
@@ -26,9 +29,6 @@ func JWTAuthen() gin.HandlerFunc {
 		if claims, ok := token.Claims.(jwt.MapClaims); ok && token.Valid {
 			c.Set("userId", claims["userId"])
 			c.Set("username", claims["username"])
-			c.Set("isValid", true)
-			fmt.Println(c.Get("isValid"))
-			fmt.Println(claims["username"])
 		} else {
 			c.AbortWithStatusJSON(http.StatusOK, gin.H{"status": "FORBIDDEN", "message": err.Error()})
 		}

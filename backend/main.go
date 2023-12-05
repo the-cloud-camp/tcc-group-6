@@ -30,10 +30,12 @@ func main() {
 			"message": "pong",
 		})
 	})
-
+	
 	authorized := r.Group("", middleware.JWTAuthen())
-	authorized.GET("/products", ProductController.GetAllProducts)
+	r.GET("/products/public", ProductController.GetAllProducts)
+	authorized.GET("/products", ProductController.GetAllProductsByUser)
 	authorized.POST("/products", ProductController.CreateProduct)
+	authorized.DELETE("/products/:id", ProductController.DeleteProductsByID)
 
 	authorizedusers := r.Group("/users", middleware.JWTAuthen())
 	authorizedusers.GET("/readall", UserController.ReadAll)
