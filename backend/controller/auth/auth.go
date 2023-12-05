@@ -72,8 +72,8 @@ func Login(c *gin.Context) {
 	if err == nil {
 		key = []byte(os.Getenv("SECRET_KEY"))
 		token := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
-			"userID": userExist.ID,
-			"exp":    time.Now().Add(time.Minute * 1).Unix(),
+			"userId": userExist.ID,
+			"exp":    time.Now().Add(time.Hour * 24).Unix(),
 		})
 
 		tokenString, err := token.SignedString(key)
