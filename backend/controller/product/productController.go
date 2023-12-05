@@ -20,7 +20,7 @@ type ProductBody struct {
 }
 
 func CreateProduct(c *gin.Context) {
-	var json ProductBody
+	json := ProductBody{}
 	if err := c.ShouldBindJSON(&json); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
@@ -39,3 +39,20 @@ func CreateProduct(c *gin.Context) {
 		c.JSON(http.StatusOK, gin.H{"status": "ERROR", "message": "Product created failed"})
 	}
 }
+
+func GetAllProducts(c *gin.Context) {
+	// products := []orm.Product{}
+	// userIdFloat64 := c.MustGet("userId").(float64)
+	// userId := uint(userIdFloat64)
+	// if (userId == "") {
+	// 	orm.Db.Find(&products)
+	// } else {
+	// 	orm.Db.Where("user_id!=?", userId).Find(&products)
+	// }
+	// c.JSON(http.StatusOK, gin.H{"status": "OK", "message": "User read successfully", "products": products})
+}
+
+// func GetUserID(c *gin.Context) {
+// 	userIdFloat64 := c.MustGet("userId").(float64)
+// 	return userIdFloat64, err
+// }

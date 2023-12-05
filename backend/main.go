@@ -2,8 +2,8 @@ package main
 
 import (
 	AuthController "backend/controller/auth"
-	UserController "backend/controller/user"
 	ProductController "backend/controller/product"
+	UserController "backend/controller/user"
 	middleware "backend/middleware"
 	"backend/orm"
 	"fmt"
@@ -30,9 +30,10 @@ func main() {
 			"message": "pong",
 		})
 	})
+
 	authorized := r.Group("", middleware.JWTAuthen())
+	authorized.GET("/products", ProductController.GetAllProducts)
 	authorized.POST("/products", ProductController.CreateProduct)
-	// r.GET("/products", ProductController.GetProduct)
 
 	authorizedusers := r.Group("/users", middleware.JWTAuthen())
 	authorizedusers.GET("/readall", UserController.ReadAll)
