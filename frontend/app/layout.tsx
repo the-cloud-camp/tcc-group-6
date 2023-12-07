@@ -13,10 +13,10 @@ export const metadata: Metadata = {
 		template: `%s - ${siteConfig.name}`,
 	},
 	description: siteConfig.description,
-	themeColor: [
-		{ media: "(prefers-color-scheme: light)", color: "white" },
-		{ media: "(prefers-color-scheme: dark)", color: "black" },
-	],
+	// themeColor: [
+	// { media: "(prefers-color-scheme: light)", color: "white" },
+	// { media: "(prefers-color-scheme: dark)", color: "black" },
+	// ],
 	icons: {
 		icon: "/favicon.ico",
 		shortcut: "/favicon-16x16.png",
@@ -45,7 +45,7 @@ export default function RootLayout({
 							{children}
 						</main>
 						<footer className="w-full flex items-center justify-center py-3">
-							<Link
+							{/* <Link
 								isExternal
 								className="flex items-center gap-1 text-current"
 								href="https://nextui-docs-v2.vercel.app?utm_source=next-app-template"
@@ -53,7 +53,7 @@ export default function RootLayout({
 							>
 								<span className="text-default-600">Powered by</span>
 								<p className="text-primary">NextUI</p>
-							</Link>
+							</Link> */}
 						</footer>
 					</div>
 				</Providers>
