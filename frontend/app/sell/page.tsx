@@ -1,7 +1,8 @@
 "use client"
 import { title } from "@/components/primitives";
-import { Table, TableHeader, TableBody, TableColumn, TableRow, TableCell } from "@nextui-org/react";
+import { Table, TableHeader, TableBody, TableColumn, TableRow, TableCell, Button } from "@nextui-org/react";
 import { Spacer } from "@nextui-org/react";
+import {PlusIcon} from "./PlusIcon";
 
 export default function SellPage() {
 	return (
@@ -11,32 +12,40 @@ export default function SellPage() {
 				<Spacer />
 				<Spacer />
 				<Spacer />
+				<Button
+					className="bg-foreground text-background"
+					endContent={<PlusIcon width={undefined} height={undefined} />}
+					size="sm"
+				>
+					Add New
+				</Button>
+				<Spacer />
 				<Table aria-label="Example static collection table">
 					<TableHeader>
 						<TableColumn>NAME</TableColumn>
-						<TableColumn>ROLE</TableColumn>
+						<TableColumn>PRICE</TableColumn>
 						<TableColumn>STATUS</TableColumn>
 					</TableHeader>
 					<TableBody>
 						<TableRow key="1">
-							<TableCell>Tony Reichert</TableCell>
-							<TableCell>CEO</TableCell>
+							<TableCell>Apple</TableCell>
+							<TableCell>20</TableCell>
 							<TableCell>Active</TableCell>
 						</TableRow>
 						<TableRow key="2">
-							<TableCell>Zoey Lang</TableCell>
-							<TableCell>Technical Lead</TableCell>
+							<TableCell>Orange</TableCell>
+							<TableCell>15</TableCell>
 							<TableCell>Paused</TableCell>
 						</TableRow>
 						<TableRow key="3">
-							<TableCell>Jane Fisher</TableCell>
-							<TableCell>Senior Developer</TableCell>
+							<TableCell>Lemon</TableCell>
+							<TableCell>10</TableCell>
 							<TableCell>Active</TableCell>
 						</TableRow>
 						<TableRow key="4">
-							<TableCell>William Howard</TableCell>
-							<TableCell>Community Manager</TableCell>
-							<TableCell>Vacation</TableCell>
+							<TableCell>Watermelon</TableCell>
+							<TableCell>20</TableCell>
+							<TableCell>Active</TableCell>
 						</TableRow>
 					</TableBody>
 				</Table>
