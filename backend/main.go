@@ -31,6 +31,7 @@ func main() {
 		})
 	})
 	
+	r.GET("/products/:id", ProductController.GetAllProductsById)
 	authorized := r.Group("", middleware.JWTAuthen())
 	r.GET("/products/public", ProductController.GetAllProducts)
 	authorized.GET("/products", ProductController.GetAllProductsByUser)

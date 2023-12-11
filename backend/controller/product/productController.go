@@ -64,6 +64,22 @@ func GetAllProductsByUser(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{"status": "OK", "message": "Product get successfully", "products": products})
 }
 
+func GetAllProductsById(c *gin.Context) {
+	product := orm.Product{}
+	productIdStr := c.Param("id")
+	productId, err := strconv.ParseUint(productIdStr, 10, 64)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Product not found"})
+		return
+	}
+	result := orm.Db.Where("id = ?", productId).First(&product)
+	if result.Error != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Product not found"})
+		return
+	}
+	c.JSON(http.StatusOK, gin.H{"status": "OK", "message": "get product by id successfully", "product": product})
+}
+
 func DeleteProductsByID(c *gin.Context) {
 	products := []orm.Product{}
 	userIdFloat64 := c.MustGet("userId").(float64)
@@ -85,7 +101,7 @@ func DeleteProductsByID(c *gin.Context) {
 		c.JSON(http.StatusNotFound, gin.H{"error": "Product not found"})
 		return
 	}
-	// orm.Db.Where("user_id = ? AND id = ?", userId, productId).Delete(&products)
-	orm.Db.Where("user_id = ? AND id = ?", userId, productId).Unscoped().Delete(&products)
+	orm.Db.Where("user_id = ? AND id = ?", userId, productId).Delete(&products)
+	// orm.Db.Where("user_id = ? AND id = ?", userId, productId).Unscoped().Delete(&products)
 	c.JSON(http.StatusOK, gin.H{"status": "OK", "message": "Product deleted successfully", "products": products})
 }
