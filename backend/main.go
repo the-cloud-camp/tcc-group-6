@@ -2,6 +2,7 @@ package main
 
 import (
 	AuthController "backend/controller/auth"
+	MatchingController "backend/controller/matching"
 	ProductController "backend/controller/product"
 	UserController "backend/controller/user"
 	middleware "backend/middleware"
@@ -30,13 +31,20 @@ func main() {
 			"message": "pong",
 		})
 	})
-	
+
 	r.GET("/products/:id", ProductController.GetAllProductsById)
 	authorized := r.Group("", middleware.JWTAuthen())
 	r.GET("/products/public", ProductController.GetAllProducts)
 	authorized.GET("/products", ProductController.GetAllProductsByUser)
 	authorized.POST("/products", ProductController.CreateProduct)
 	authorized.DELETE("/products/:id", ProductController.DeleteProductsByID)
+
+	r.POST("/matching/:product_id_sell/:product_id_buy", MatchingController.SendOffer)
+	r.GET("/matching/:product_id_sell/:product_id_buy", MatchingController.GetOffer)
+	authorized.GET("/matching/received", MatchingController.GetAllReceivedOffer)
+	authorized.GET("/matching/sent", MatchingController.GetAllSentOffer)
+	authorized.GET("/matching/matched", MatchingController.GetAllMatched)
+	authorized.GET("/matching/matched/:id", MatchingController.GetMatchedInfo)
 
 	authorizedusers := r.Group("/users", middleware.JWTAuthen())
 	authorizedusers.GET("/readall", UserController.ReadAll)

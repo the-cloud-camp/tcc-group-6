@@ -20,5 +20,6 @@ func InitDB() {
 	Db.AutoMigrate(
 		&User{},
 		&Product{},
+		&Matching{},
 	)
 }

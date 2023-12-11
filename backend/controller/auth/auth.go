@@ -17,8 +17,9 @@ var (
 )
 
 type RegisterBody struct {
-	Username string `json:"username" binding:"required"`
-	Password string `json:"password" binding:"required"`
+	Username  string `json:"username" binding:"required"`
+	Password  string `json:"password" binding:"required"`
+	Telephone string `json:"telephone" binding:"required"`
 }
 
 func Register(c *gin.Context) {
@@ -39,7 +40,11 @@ func Register(c *gin.Context) {
 	// Create User
 	encryptPassword, _ := bcrypt.GenerateFromPassword([]byte(json.Password), 10)
 
-	user := orm.User{Username: json.Username, Password: string(encryptPassword)}
+	user := orm.User{
+		Username:  json.Username,
+		Password:  string(encryptPassword),
+		Telephone: json.Telephone}
+
 	orm.Db.Create(&user)
 	if user.ID > 0 {
 		c.JSON(http.StatusOK, gin.H{"status": "OK", "message": "User created successfully", "userId": user.ID})
