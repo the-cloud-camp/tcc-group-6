@@ -85,7 +85,7 @@ func Login(c *gin.Context) {
 		tokenString, err := token.SignedString(key)
 		fmt.Println(tokenString, err)
 
-		c.JSON(http.StatusOK, gin.H{"status": "OK", "message": "Login successfully", "token": tokenString})
+		c.JSON(http.StatusOK, gin.H{"status": "OK", "message": "Login successfully", "token": tokenString, "username": userExist.Username, "userId":   userExist.ID})
 	} else {
 		c.JSON(http.StatusOK, gin.H{"status": "ERROR", "message": "Login failed"})
 	}
