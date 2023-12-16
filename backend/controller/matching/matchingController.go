@@ -167,19 +167,19 @@ func GetAllMatched(c *gin.Context) {
 }
 
 func GetMatchedInfo(c *gin.Context) {
-	matched := orm.Matching{}
-	matchedIdStr := c.Param("id")
-	matchedId, err := strconv.ParseUint(matchedIdStr, 10, 64)
-	if err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "matched not found"})
-		return
-	}
-	result := orm.Db.Where("id = ?", matchedId).First(&matched)
-	if result.Error != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "Matched not found"})
-		return
-	}
-	c.JSON(http.StatusOK, gin.H{"status": "OK", "message": "Get matched by id successfully", "matched": matched})
+	// matched := orm.Matching{}
+	// matchedIdStr := c.Param("id")
+	// matchedId, err := strconv.ParseUint(matchedIdStr, 10, 64)
+	// if err != nil {
+	// 	c.JSON(http.StatusBadRequest, gin.H{"error": "matched not found"})
+	// 	return
+	// }
+	// result := orm.Db.Where("id = ?", matchedId).First(&matched)
+	// if result.Error != nil {
+	// 	c.JSON(http.StatusBadRequest, gin.H{"error": "Matched not found"})
+	// 	return
+	// }
+	// c.JSON(http.StatusOK, gin.H{"status": "OK", "message": "Get matched by id successfully", "matched": matched})
 
 	userIdFloat64 := c.MustGet("userId").(float64)
 	userId := uint(userIdFloat64)
@@ -190,26 +190,30 @@ func GetMatchedInfo(c *gin.Context) {
 
 	type Result struct {
 		orm.Matching
-		BuyerUserID    uint   `json:"buyer_user_id"`
-		BuyerUsername  string `json:"buyer_username"`
-		SellerUserID   uint   `json:"seller_user_id"`
-		SellerUsername string `json:"seller_username"`
+		BuyerUserID     uint   `json:"buyer_user_id"`
+		BuyerUsername   string `json:"buyer_username"`
+		SellerUserID    uint   `json:"seller_user_id"`
+		SellerUsername  string `json:"seller_username"`
+		BuyerTelephone  string `json:"buyer_telephone"`
+		SellerTelephone string `json:"seller_telephone"`
 	}
 
-	var matching []Result
+	var matching Result
 
 	matchingResult := orm.Db.
 		Table("matchings").
-		Select("matchings.*, buy_products.user_id AS buyer_user_id, buy_products.username AS buyer_username, sell_products.user_id AS seller_user_id, sell_products.username AS seller_username").
+		Select("matchings.*, buy_products.user_id AS buyer_user_id, buy_products.username AS buyer_username, sell_products.user_id AS seller_user_id, sell_products.username AS seller_username, buy_users.telephone AS buyer_telephone, sell_users.telephone AS seller_telephone").
 		Joins("JOIN products AS buy_products ON matchings.product_id_buy = buy_products.id").
 		Joins("JOIN products AS sell_products ON matchings.product_id_sell = sell_products.id").
+		Joins("JOIN users AS buy_users ON buy_products.user_id = buy_users.id").
+		Joins("JOIN users AS sell_users ON sell_products.user_id = sell_users.id").
 		Where("(buy_products.user_id = ? OR sell_products.user_id = ?) AND matchings.matching_status = 'matched'", userId, userId).
-		Find(&matching)
+		First(&matching)
 
 	if matchingResult.Error != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "AllMatched not found"})
+		c.JSON(http.StatusBadRequest, gin.H{"error": "MatchingResult not found"})
 		return
 	}
 
-	c.JSON(http.StatusOK, gin.H{"status": "OK", "message": "AllMatched get successfully", "matching": matching})
+	c.JSON(http.StatusOK, gin.H{"status": "OK", "message": "MatchingResult get successfully", "matching": matching})
 }
