@@ -27,6 +27,10 @@ export const siteConfig = {
 		{
 			label: "Sell",
 			href: "/sell",
+		},
+		{
+			label: "Matching",
+			href: "/matching",
 		}
 	],
 	navMenuItems: [
